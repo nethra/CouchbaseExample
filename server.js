@@ -7,6 +7,11 @@ var cluster = new couchbase.Cluster('couchbase://localhost/');
 var bucket = cluster.openBucket('default');
 var N1qlQuery = couchbase.N1qlQuery;
 const saltRounds = 10;
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 app.use(bodyParser.json({limit:'100kb'}));
 
 
@@ -46,7 +51,7 @@ app.post('/usercredential/validate', function(req, res){
         {
          bcrypt.compare(req.body.UserCredential.password, result.value.password, function(err, result){
           console.log(result);
-          if(result=="true")
+          if(result)
           {
             res.send(result);
           }
@@ -114,7 +119,7 @@ if(err==null)
   
 });*/
 
-app.listen(3001)
+app.listen(3002)
 {
-	console.log("server running on port 3001");
+	console.log("server running on port 3002");
 }
